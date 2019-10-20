@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class EditMessageActivity extends AppCompatActivity {
+public class EditMessageActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     //public static final String EXTRA_MESSAGE = "org.gruppo0.smsdemo.MESSAGE";
     //public static final String EXTRA_NUMBER = "org.gruppo0.smsdemo.NUMBER";
@@ -32,20 +32,33 @@ public class EditMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_message);
     }
 
+    public void checkSmsPermissions(View view) {
+        // check if SEND_SMS permission was granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            // if not
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_FROM_EDITOR);
+        }
+        else
+            this.sendMessage();
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == SEND_SMS_FROM_EDITOR && permissions[0].equals(Manifest.permission.SEND_SMS))
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                this.sendMessage();
+            else
+                Toast.makeText(this, "You must grant permission to send SMS", Toast.LENGTH_LONG).show();
+    }
+
     // called when the user taps the SEND button
-    public void sendMessage(View view) {
+    public void sendMessage() {
         EditText editText2 = (EditText) findViewById(R.id.editText2);
         String message = editText2.getText().toString();
         EditText editText = (EditText) findViewById(R.id.editText);
         String number = editText.getText().toString();
 
-        // check if SEND_SMS permission was granted
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            // if not
-            ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_FROM_EDITOR);
-        }
-        // yet to implement: ActivityCompat.OnRequestPermissionsResultCallback
+
 
         SmsManager smsManager = SmsManager.getDefault();
         PendingIntent sent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent("SMS_SENT"), 0);
