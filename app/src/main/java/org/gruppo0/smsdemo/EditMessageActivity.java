@@ -69,6 +69,7 @@ public class EditMessageActivity extends AppCompatActivity implements ActivityCo
         PendingIntent delivered = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent("SMS_DELIVERED"), 0);
         onSend = new BroadcastReceiver() {
             @Override
+            // what to do when associated broadcast is received
             public void onReceive(Context arg0, Intent arg1) {
                 if (getResultCode()== Activity.RESULT_OK)
                     Toast.makeText(arg0, "SMS sent", Toast.LENGTH_LONG).show();
@@ -85,6 +86,7 @@ public class EditMessageActivity extends AppCompatActivity implements ActivityCo
                     Toast.makeText(arg0, "Error while delivering", Toast.LENGTH_LONG).show();
             }
         };
+        // tell the BroadcastReceiver when the corresponding PendingIntent is launched
         registerReceiver(onSend, new IntentFilter("SMS_SENT"));
         registerReceiver(onDeliver, new IntentFilter("SMS_DELIVERED"));
         smsManager.sendTextMessage(number, null, message, sent, delivered);
