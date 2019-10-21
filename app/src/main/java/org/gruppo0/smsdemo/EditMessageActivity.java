@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,8 +29,13 @@ public class EditMessageActivity extends AppCompatActivity implements ActivityCo
     protected void onPause()
     {
         super.onPause();
-        unregisterReceiver(onSend);
-        unregisterReceiver(onDeliver);
+        try{
+            unregisterReceiver(onSend);
+            unregisterReceiver(onDeliver);
+        }
+        catch (IllegalArgumentException e){
+            Log.d("EditMessageActivity", "Can't unregister non-registered BroadcastReceiver");
+        }
     }
 
     @Override
