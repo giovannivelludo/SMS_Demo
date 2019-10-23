@@ -1,18 +1,33 @@
 package org.gruppo0.smsdemo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+
+    public static final int RECEIVE_SMS_FROM_BROADCAST = 2;
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == RECEIVE_SMS_FROM_BROADCAST && permissions[0].equals(Manifest.permission.RECEIVE_SMS))
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED)
+                //if permission to receive SMS was not granted, ask to grant it
+                Toast.makeText(this, "You must grant permission to receive SMS", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
                 openEditor(view);
             }
         });
+
+        // check if RECEIVE_SMS permission was granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+            // if not
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, RECEIVE_SMS_FROM_BROADCAST);
+        }
+
+        // get intent that started the activity (if a message was received)
+        Intent smsIntent = getIntent();
+        String message = smsIntent.getStringExtra(SmsReceiver.EXTRA_MESSAGE);
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(message);
     }
 
     @Override
