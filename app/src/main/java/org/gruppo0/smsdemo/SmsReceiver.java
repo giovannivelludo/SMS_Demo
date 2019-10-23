@@ -8,7 +8,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsReceiver extends BroadcastReceiver {
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    public static final String EXTRA_MESSAGE = "org.gruppo0.smsdemo.MESSAGE";
     private String TAG = SmsReceiver.class.getSimpleName();
 
     public SmsReceiver() {
@@ -42,9 +42,17 @@ public class SmsReceiver extends BroadcastReceiver {
 
             // Display the entire SMS Message
             Log.d(TAG, str);
-            Intent smsIntent = new Intent("SmsReceiver");
+
+            // send intent with message to main activity
+
+            /** Intent smsIntent = new Intent("SmsReceiver");
             smsIntent.putExtra(EXTRA_MESSAGE, str);
-            context.sendBroadcast(smsIntent);
+            context.sendBroadcast(smsIntent); */
+
+            Intent smsIntent = new Intent(context, MainActivity.class);
+            smsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            smsIntent.putExtra(EXTRA_MESSAGE, str);
+            context.startActivity(smsIntent);
         }
     }
 }

@@ -44,12 +44,17 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
         });
 
-        // check permission to receive SMS
         // check if RECEIVE_SMS permission was granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
             // if not
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, RECEIVE_SMS_FROM_BROADCAST);
         }
+
+        // get intent that started the activity (if a message was received)
+        Intent smsIntent = getIntent();
+        String message = smsIntent.getStringExtra(SmsReceiver.EXTRA_MESSAGE);
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(message);
     }
 
     /** at Override
