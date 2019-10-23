@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == RECEIVE_SMS_FROM_BROADCAST && permissions[0].equals(Manifest.permission.RECEIVE_SMS))
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED)
-                //if permission to send SMS was granted, send a message
+                //if permission to receive SMS was not granted, ask to grant it
                 Toast.makeText(this, "You must grant permission to receive SMS", Toast.LENGTH_LONG).show();
     }
 
