@@ -57,14 +57,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         textView.setText(message);
     }
 
-    /** at Override
-    protected void onResume() {
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(SmsReceiver.EXTRA_MESSAGE);
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(message);
-    } */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
