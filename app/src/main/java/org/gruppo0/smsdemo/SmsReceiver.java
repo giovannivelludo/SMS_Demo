@@ -42,9 +42,9 @@ public class SmsReceiver extends BroadcastReceiver {
 
             // Display the entire SMS Message
             Log.d(TAG, str);
-            Intent smsIntent = new Intent(context, MainActivity.class);
+            Intent smsIntent = new Intent("SmsReceiver");
             smsIntent.putExtra(EXTRA_MESSAGE, str);
-            context.startActivity(intent);
+            context.sendBroadcast(smsIntent);
         }
     }
 }
