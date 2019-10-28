@@ -55,7 +55,6 @@ public class EditMessageActivity extends AppCompatActivity implements ActivityCo
             this.sendMessage();
     }
 
-    // required because this class implements ActivityCompat.OnRequestPermissionsResultCallback
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == SEND_SMS_FROM_EDITOR && permissions[0].equals(Manifest.permission.SEND_SMS))
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
