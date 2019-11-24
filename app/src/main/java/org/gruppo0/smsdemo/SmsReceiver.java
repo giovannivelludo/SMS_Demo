@@ -56,7 +56,3 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 }
-
-// prova
-// prova2
-
